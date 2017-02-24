@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Test WebWorker</title>
+    </head>
+    <body>
+        <h1> Test Web Worker </h1>
+        <div id="app" class="app"/>
+        <input type="text" oninput="OnPChange()" id="myInput"/>
+        <button onclick="OnTerminateWorker()" > Terminate Worker </button>
+        <button onclick="OnSendStopMessage()" > Send Stop Message </button>
+        <p id="myId">
+        </p>
+
+        <script type="text/javascript">
+            var myScript = "myWorker.js";
+            var myWorker = new window.Worker(myScript);
+
+            var myP = window.document.getElementById("myId");
+            var myInput = window.document.getElementById("myInput");
+
+            function OnPChange(e)
+            {
+                myWorker.postMessage(myInput.value);
+            }
+
+            function OnBClick(e)
+            {
+                myWorker.terminate();
+            };
+
+            function OnSendStopMessage(e)
+            {
+                myWorker.postMessage("STOP");
+            };
+
+            myWorker.onmessage = function(e) 
+            {
+                myP.innerText = e.data;
+            }
+
+
+        </script>
+
+    </body>
+</html>
